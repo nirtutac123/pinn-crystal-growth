@@ -21,6 +21,7 @@ This repository contains a cleaned implementation focused on:
 - 2D Navier-Stokes-style thermal-fluid coupling for crystal-growth simulation
 - MLP and SIREN neural architectures
 - Baseline PINN, GNPINN, and AgenticPINN training strategies
+- Supervised CFD surrogate training on externally shared Czochralski temperature-change and swirl-change datasets
 - Plotting and artifact export for reproducible experiments
 
 The full thesis workspace may contain additional notes, draft documents, large generated outputs, and third-party model explorations. Those are intentionally excluded from this public repository.
@@ -31,6 +32,7 @@ The full thesis workspace may contain additional notes, draft documents, large g
 .
 ├── Data/                  # Synthetic Czochralski-style dataset and generator
 ├── equations/             # PDE formulations and residual definitions
+├── experiments/           # Reproducible experiment scripts
 ├── examples/              # Example scripts and visualization workflows
 ├── models/                # Neural architectures and PINN trainers
 ├── utils/                 # Training, seeding, and model IO helpers
@@ -85,6 +87,22 @@ Run a small crystal-growth thermal-fluid smoke test:
 python main.py --equation crystal --epochs 5 --collocation_points 200 --plot_resolution 20 --output_dir results/crystal_smoke
 ```
 
+Train supervised CFD surrogates on external Czochralski CFD data:
+
+```bash
+python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --epochs 120
+python experiments/train_cfd_surrogate.py --dataset swirl --holdout 1.676 --epochs 120
+```
+
+These commands expect the external CFD repositories to be available under:
+
+```text
+external_repos/CZ_Study_TempChange/
+external_repos/CZ_study_Swirl-Change/
+```
+
+The surrogate maps `(r, z, case_parameter)` to `(u_r, u_z, u_swirl, p, T)` and writes metrics and figures to `results/cfd_surrogate/`.
+
 Generated outputs are written under `results/`, which is ignored by Git.
 
 ## Main CLI Options
@@ -123,6 +141,8 @@ Data/cz_synthetic_data.csv
 ```
 
 It is provided for reproducible local experiments and demonstration. For thesis claims, synthetic-data limitations should be stated clearly.
+
+The CFD surrogate script uses external datasets shared for thesis development. These are not bundled in this clean repository. Clone or place the datasets under `external_repos/` before running `experiments/train_cfd_surrogate.py`.
 
 ## Publication Note
 
