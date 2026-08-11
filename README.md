@@ -21,7 +21,7 @@ This repository contains a cleaned implementation focused on:
 - 2D Navier-Stokes-style thermal-fluid coupling for crystal-growth simulation
 - MLP and SIREN neural architectures
 - Baseline PINN, GNPINN, and AgenticPINN training strategies
-- Supervised CFD surrogate training on externally shared Czochralski temperature-change and swirl-change datasets
+- Supervised CFD surrogate training on externally shared Czochralski temperature, crucible-rotation, and crystal-rotation sweep datasets
 - Plotting and artifact export for reproducible experiments
 
 The full thesis workspace may contain additional notes, draft documents, large generated outputs, and third-party model explorations. Those are intentionally excluded from this public repository.
@@ -91,14 +91,16 @@ Train supervised CFD surrogates on external Czochralski CFD data:
 
 ```bash
 python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --epochs 120
-python experiments/train_cfd_surrogate.py --dataset swirl --holdout 1.676 --epochs 120
+python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0 --epochs 120
+python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --epochs 120
 ```
 
 These commands expect the external CFD repositories to be available under:
 
 ```text
 external_repos/CZ_Study_TempChange/
-external_repos/CZ_study_Swirl-Change/
+external_repos/CZ_study_Crucible_Sweep/
+external_repos/CZ_Crystal_Sweep/
 ```
 
 The surrogate maps `(r, z, case_parameter)` to `(u_r, u_z, u_swirl, p, T)` and writes metrics and figures to `results/cfd_surrogate/`.

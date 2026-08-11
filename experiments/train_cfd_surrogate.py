@@ -16,7 +16,8 @@ from torch.utils.data import DataLoader, TensorDataset
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMP_ROOT = ROOT / "external_repos" / "CZ_Study_TempChange" / "Steady"
-SWIRL_ROOT = ROOT / "external_repos" / "CZ_study_Swirl-Change"
+CRUCIBLE_ROOT = ROOT / "external_repos" / "CZ_study_Crucible_Sweep"
+CRYSTAL_ROOT = ROOT / "external_repos" / "CZ_Crystal_Sweep"
 OUT_ROOT = ROOT / "results" / "cfd_surrogate"
 FEATURE_COLUMNS = ["r", "z", "case_parameter"]
 TARGET_COLUMNS = ["u_r", "u_z", "u_swirl", "p", "T"]
@@ -69,11 +70,18 @@ def infer_temperature(path: Path) -> float:
     return float(match.group(1))
 
 
-def infer_swirl(path: Path) -> float:
-    match = re.search(r"swirl_([0-9.]+)", path.name)
+def infer_crystal_rpm(path: Path) -> float:
+    match = re.search(r"crystal_([0-9]+)rpm", path.name)
     if not match:
-        raise ValueError(f"Could not infer swirl value from {path.name}")
-    return float(match.group(1).rstrip("."))
+        raise ValueError(f"Could not infer crystal rpm from {path.name}")
+    return float(match.group(1))
+
+
+def infer_crucible_rpm(path: Path) -> float:
+    match = re.search(r"crucible_m([0-9]+(?:p[0-9]+)?)rpm", path.name)
+    if not match:
+        raise ValueError(f"Could not infer crucible rpm from {path.name}")
+    return -float(match.group(1).replace("p", "."))
 
 
 def load_temperature_cases() -> List[CaseData]:
@@ -81,6 +89,8 @@ def load_temperature_cases() -> List[CaseData]:
         raise FileNotFoundError(f"Missing temperature dataset folder: {TEMP_ROOT}")
     cases = []
     for path in sorted(TEMP_ROOT.glob("*.csv")):
+        if path.name == "cz_baseline.csv" and (TEMP_ROOT / "cz_(temp 1745).csv").exists():
+            continue
         parameter = infer_temperature(path)
         frame = pd.read_csv(path)
         frame["case_parameter"] = parameter
@@ -88,24 +98,38 @@ def load_temperature_cases() -> List[CaseData]:
     return cases
 
 
-def load_swirl_cases() -> List[CaseData]:
-    if not SWIRL_ROOT.exists():
-        raise FileNotFoundError(f"Missing swirl dataset folder: {SWIRL_ROOT}")
+def load_crystal_cases() -> List[CaseData]:
+    if not CRYSTAL_ROOT.exists():
+        raise FileNotFoundError(f"Missing crystal-rotation dataset folder: {CRYSTAL_ROOT}")
     cases = []
-    for path in sorted(SWIRL_ROOT.glob("*.csv")):
-        parameter = infer_swirl(path)
+    for path in sorted(CRYSTAL_ROOT.glob("*.csv")):
+        parameter = infer_crystal_rpm(path)
         frame = pd.read_csv(path)
         frame["case_parameter"] = parameter
-        cases.append(CaseData("swirl", path.stem, parameter, path, frame))
+        cases.append(CaseData("crystal", path.stem, parameter, path, frame))
+    return cases
+
+
+def load_crucible_cases() -> List[CaseData]:
+    if not CRUCIBLE_ROOT.exists():
+        raise FileNotFoundError(f"Missing crucible-rotation dataset folder: {CRUCIBLE_ROOT}")
+    cases = []
+    for path in sorted(CRUCIBLE_ROOT.glob("*.csv")):
+        parameter = infer_crucible_rpm(path)
+        frame = pd.read_csv(path)
+        frame["case_parameter"] = parameter
+        cases.append(CaseData("crucible", path.stem, parameter, path, frame))
     return cases
 
 
 def select_cases(dataset: str) -> List[CaseData]:
     if dataset == "temperature":
         return load_temperature_cases()
-    if dataset == "swirl":
-        return load_swirl_cases()
-    return load_temperature_cases() + load_swirl_cases()
+    if dataset == "crystal":
+        return load_crystal_cases()
+    if dataset == "crucible":
+        return load_crucible_cases()
+    raise ValueError(f"Unsupported dataset: {dataset}")
 
 
 def sample_frame(frame: pd.DataFrame, max_rows: int, seed: int) -> pd.DataFrame:
@@ -301,9 +325,9 @@ def run(args):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Train a supervised MLP surrogate on shared Czochralski CFD CSV datasets."
+        description="Train a supervised MLP surrogate on certified Czochralski CFD sweep datasets."
     )
-    parser.add_argument("--dataset", choices=["temperature", "swirl"], default="temperature")
+    parser.add_argument("--dataset", choices=["temperature", "crucible", "crystal"], default="temperature")
     parser.add_argument("--holdout", default=None, help="Case name or case parameter to reserve for testing.")
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--max_rows_per_case", type=int, default=2500)

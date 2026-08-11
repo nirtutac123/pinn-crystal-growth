@@ -42,17 +42,24 @@ Supervised CFD surrogate using the external temperature-change dataset:
 python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
 ```
 
-Supervised CFD surrogate using the external swirl-change dataset:
+Supervised CFD surrogate using the external crucible-rotation dataset:
 
 ```bash
-python experiments/train_cfd_surrogate.py --dataset swirl --holdout 1.676 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+```
+
+Supervised CFD surrogate using the external crystal-rotation dataset:
+
+```bash
+python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
 ```
 
 The CFD surrogate commands require the external datasets to be available at:
 
 ```text
 external_repos/CZ_Study_TempChange/
-external_repos/CZ_study_Swirl-Change/
+external_repos/CZ_study_Crucible_Sweep/
+external_repos/CZ_Crystal_Sweep/
 ```
 
 ## Expected Outputs
