@@ -1,6 +1,6 @@
 # Reproducibility Guide
 
-This guide lists minimal commands for checking that the cleaned repository runs.
+This guide lists the main commands for checking and reproducing the thesis-relevant code path.
 
 ## Environment
 
@@ -10,7 +10,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Smoke Tests
+## 1. PINN Smoke Tests
 
 Baseline heat PINN:
 
@@ -36,25 +36,11 @@ Crystal-growth proxy:
 python main.py --equation crystal --epochs 5 --collocation_points 200 --plot_resolution 20 --output_dir results/crystal_smoke
 ```
 
-Supervised CFD surrogate using the external temperature-change dataset:
+These smoke tests are intentionally short. They are useful for checking that the code runs, not for reproducing final thesis-quality metrics.
 
-```bash
-python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
-```
+## 2. Corrected CFD Surrogate Runs
 
-Supervised CFD surrogate using the external crucible-rotation dataset:
-
-```bash
-python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
-```
-
-Supervised CFD surrogate using the external crystal-rotation dataset:
-
-```bash
-python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
-```
-
-The CFD surrogate commands require the external datasets to be available at:
+Place or clone the corrected external CFD repositories at:
 
 ```text
 external_repos/CZ_Study_TempChange/
@@ -62,14 +48,54 @@ external_repos/CZ_study_Crucible_Sweep/
 external_repos/CZ_Crystal_Sweep/
 ```
 
-## Expected Outputs
+Then run the three case-wise holdout surrogate experiments.
 
-Each run should create:
+Temperature-change dataset:
 
-- `*_history.json`
-- `*_summary.json`
-- loss plots
-- solution or field plots when plotting succeeds
-- CFD surrogate metrics, parity plots, and field-error plots when external CFD data is available
+```bash
+python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+```
 
-The `results/` directory is intentionally ignored by Git.
+Crucible-rotation dataset:
+
+```bash
+python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+```
+
+Crystal-rotation dataset:
+
+```bash
+python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+```
+
+## 3. Expected CFD Surrogate Outputs
+
+Each surrogate run writes outputs to:
+
+```text
+results/cfd_surrogate/<dataset>/
+```
+
+Expected files include:
+
+- `<dataset>_history.csv`
+- `<dataset>_summary.json`
+- `<dataset>_metrics.csv`
+- `<dataset>_training_loss.png`
+- `<dataset>_holdout_parity.png`
+- `<dataset>_holdout_T_field.png`
+- `<dataset>_holdout_u_swirl_field.png`
+
+## 4. Interpreting the Runs
+
+The CFD surrogate experiments use one full unseen case for testing:
+
+| Dataset | Holdout |
+| --- | --- |
+| Temperature-change | `1780 K` |
+| Crucible-rotation | `-4 rpm` |
+| Crystal-rotation | `7 rpm` |
+
+Temperature and crucible sweeps are expected to be easier because their field changes are smoother. The crystal-rotation holdout is expected to be harder, especially for radial and axial velocity, because the corrected data show stronger flow-structure change around the 6 to 7 rpm region.
+
+The `results/` directory is intentionally ignored by Git so generated artifacts do not make the public repository heavy.
