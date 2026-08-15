@@ -40,11 +40,11 @@ python experiments/train_cfd_surrogate.py --dataset temperature --data_root /pat
 
 The datasets represent separate one-parameter sweeps:
 
-| Dataset | Process parameter | Example holdout |
-| --- | --- | --- |
-| Temperature-change | hot-boundary temperature `T_hot` | `1780 K` |
-| Crucible-rotation | crucible rotation `omega` | `-4 rpm` |
-| Crystal-rotation | crystal rotation `omega` | `7 rpm` |
+| Dataset | Process parameter | Example holdout | DOI |
+| --- | --- | --- | --- |
+| Temperature-change | hot-boundary temperature `T_hot` | `1780 K` | https://doi.org/10.5281/zenodo.21955315 |
+| Crucible-rotation | crucible rotation `omega` | `-4 rpm` | https://doi.org/10.5281/zenodo.21955323 |
+| Crystal-rotation | crystal rotation `omega` | `7 rpm` | https://doi.org/10.5281/zenodo.21955299 |
 
 Each CFD case is expected to contain spatial coordinates and physical fields:
 
@@ -67,3 +67,11 @@ The surrogate experiment holds out one complete CFD case for testing. This is st
 Earlier CFD sweep data had a boundary-condition issue in which one surface was frozen. The final repository workflow uses the corrected temperature, crucible-rotation, and crystal-rotation sweep datasets.
 
 The previous swirl-change dataset is not used for final thesis claims.
+
+## Dataset Citations
+
+Use the Zenodo records below when citing the corrected CFD sweep data:
+
+- CZ Silicon Melt CFD Reference Dataset - Hot Wall Temperature Sweep: https://doi.org/10.5281/zenodo.21955315
+- CZ Silicon Melt CFD Reference Dataset - Crucible Rotation Sweep: https://doi.org/10.5281/zenodo.21955323
+- CZ Silicon Melt CFD Reference Dataset - Crystal Rotation Sweep: https://doi.org/10.5281/zenodo.21955299

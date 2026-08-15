@@ -130,6 +130,12 @@ For more detail, see:
 - `REPRODUCIBILITY.md` for exact run commands.
 - `RESULTS_SUMMARY.md` for final thesis-reported outcomes.
 
+The corrected CFD datasets are archived on Zenodo for citation:
+
+- Temperature sweep: https://doi.org/10.5281/zenodo.21955315
+- Crucible rotation sweep: https://doi.org/10.5281/zenodo.21955323
+- Crystal rotation sweep: https://doi.org/10.5281/zenodo.21955299
+
 ## Main CLI Options
 
 ```bash

@@ -32,11 +32,11 @@ The main conclusion is therefore not that one method is always best. The stronge
 
 The corrected CFD surrogate experiments use case-wise holdout evaluation.
 
-| Dataset | Holdout case | Main observation |
-| --- | --- | --- |
-| Temperature-change | `T_hot = 1780 K` | Low relative errors across all target variables |
-| Crucible-rotation | `omega = -4 rpm` | Low relative errors across all target variables |
-| Crystal-rotation | `omega = 7 rpm` | Harder prediction, especially for `u_r` and `u_z` |
+| Dataset | Holdout case | Main observation | DOI |
+| --- | --- | --- | --- |
+| Temperature-change | `T_hot = 1780 K` | Low relative errors across all target variables | https://doi.org/10.5281/zenodo.21955315 |
+| Crucible-rotation | `omega = -4 rpm` | Low relative errors across all target variables | https://doi.org/10.5281/zenodo.21955323 |
+| Crystal-rotation | `omega = 7 rpm` | Harder prediction, especially for `u_r` and `u_z` | https://doi.org/10.5281/zenodo.21955299 |
 
 The crystal-rotation case is harder because the corrected sweep shows stronger meridional-flow changes around the 6 to 7 rpm region.
 
