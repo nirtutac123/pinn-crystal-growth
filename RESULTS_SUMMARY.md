@@ -40,6 +40,8 @@ The corrected CFD surrogate experiments use case-wise holdout evaluation.
 
 The crystal-rotation case is harder because the corrected sweep shows stronger meridional-flow changes around the 6 to 7 rpm region.
 
+The code supports both corrected GitHub repository layouts and the raw `data.zip` layout shared during thesis development.
+
 ## What the Results Support
 
 The results support three defensible claims:

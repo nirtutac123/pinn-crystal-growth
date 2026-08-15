@@ -96,6 +96,7 @@ python main.py --equation crystal --epochs 5 --collocation_points 200 --plot_res
 Train supervised CFD surrogates on corrected external Czochralski CFD data:
 
 ```bash
+python experiments/train_cfd_surrogate.py --dataset temperature --validate_only
 python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --epochs 120
 python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0 --epochs 120
 python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --epochs 120
@@ -108,6 +109,16 @@ external_repos/CZ_Study_TempChange/
 external_repos/CZ_study_Crucible_Sweep/
 external_repos/CZ_Crystal_Sweep/
 ```
+
+It also supports the raw `data.zip` layout shared during thesis development after extraction:
+
+```text
+data/temperature/
+data/crucible/
+data/crystal/
+```
+
+Use `--data_root /path/to/extracted/data_parent` if the corrected CSV files are stored outside `external_repos/`.
 
 The surrogate maps `(r, z, case_parameter)` to `(u_r, u_z, u_swirl, p, T)` and writes metrics and figures to `results/cfd_surrogate/`.
 
@@ -164,6 +175,21 @@ Required external data folders:
 external_repos/CZ_Study_TempChange/Steady/
 external_repos/CZ_study_Crucible_Sweep/
 external_repos/CZ_Crystal_Sweep/
+```
+
+Alternative extracted raw zip layout:
+
+```text
+data/temperature/
+data/crucible/
+data/crystal/
+```
+
+Example with an extracted zip folder:
+
+```bash
+python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --validate_only
+python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --holdout 1780.0 --epochs 120
 ```
 
 ## Publication Note

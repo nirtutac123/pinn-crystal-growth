@@ -50,6 +50,14 @@ external_repos/CZ_Crystal_Sweep/
 
 Then run the three case-wise holdout surrogate experiments.
 
+Quick data validation without training:
+
+```bash
+python experiments/train_cfd_surrogate.py --dataset temperature --validate_only
+python experiments/train_cfd_surrogate.py --dataset crucible --validate_only
+python experiments/train_cfd_surrogate.py --dataset crystal --validate_only
+```
+
 Temperature-change dataset:
 
 ```bash
@@ -66,6 +74,15 @@ Crystal-rotation dataset:
 
 ```bash
 python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+```
+
+If using Bertwin's raw `data.zip`, extract it first and pass the parent folder with `--data_root`:
+
+```bash
+python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --validate_only
+python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --holdout 1780.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+python experiments/train_cfd_surrogate.py --dataset crucible --data_root /path/to/extracted --holdout -4.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+python experiments/train_cfd_surrogate.py --dataset crystal --data_root /path/to/extracted --holdout 7.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
 ```
 
 ## 3. Expected CFD Surrogate Outputs

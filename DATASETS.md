@@ -24,6 +24,20 @@ external_repos/CZ_study_Crucible_Sweep/
 external_repos/CZ_Crystal_Sweep/
 ```
 
+The loader also accepts the extracted raw zip layout:
+
+```text
+data/temperature/
+data/crucible/
+data/crystal/
+```
+
+When using this layout, pass the parent directory with `--data_root`:
+
+```bash
+python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --validate_only
+```
+
 The datasets represent separate one-parameter sweeps:
 
 | Dataset | Process parameter | Example holdout |
