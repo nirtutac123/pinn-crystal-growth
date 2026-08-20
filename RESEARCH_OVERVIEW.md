@@ -27,7 +27,7 @@ The implementation supports:
 - Heat equation benchmark
 - Simplified Navier-Stokes-style thermal-fluid crystal-growth model
 - MLP and SIREN network architectures
-- supervised CFD surrogate training on corrected Czochralski sweep datasets
+- Gaussian Process Regression surrogate evaluation on corrected Czochralski sweep datasets
 
 ## Thesis Contribution
 
@@ -38,7 +38,7 @@ The most defensible thesis claims are:
 - Adaptive loss control can strongly reduce PDE residuals in selected settings.
 - Training behavior depends on the equation, network architecture, and PDE-vs-boundary loss balance.
 - For crystal-growth proxy experiments, adaptive methods should be evaluated with both total weighted loss and individual PDE/BC/IC components.
-- Corrected Czochralski CFD sweep data can support supervised surrogate validation and physical interpretation.
+- Corrected Czochralski CFD sweep data can support supervised surrogate validation, uncertainty visualization, and physical interpretation.
 
 ## Reproducibility Strategy
 

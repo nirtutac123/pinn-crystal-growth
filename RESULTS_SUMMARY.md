@@ -28,19 +28,21 @@ The main conclusion is therefore not that one method is always best. The stronge
 
 > Adaptive control changes the balance of physics-informed training and should be evaluated through separate loss components, not only through one total loss value.
 
-## Corrected CFD Surrogate Results
+## Corrected CFD GPR Surrogate Results
 
-The corrected CFD surrogate experiments use case-wise holdout evaluation.
+The corrected CFD surrogate experiments use Gaussian Process Regression with case-wise holdout evaluation. GPR is used instead of an MLP because it is faster for a compact sampled training set and reports predictive uncertainty.
 
-| Dataset | Holdout case | Main observation | DOI |
+| Dataset | Holdout case | Main observation | Compact GPR check |
 | --- | --- | --- | --- |
-| Temperature-change | `T_hot = 1780 K` | Low relative errors across all target variables | https://doi.org/10.5281/zenodo.21955315 |
-| Crucible-rotation | `omega = -4 rpm` | Low relative errors across all target variables | https://doi.org/10.5281/zenodo.21955323 |
-| Crystal-rotation | `omega = 7 rpm` | Harder prediction, especially for `u_r` and `u_z` | https://doi.org/10.5281/zenodo.21955299 |
+| Temperature-change | `T_hot = 1780 K` | Smoother thermal sweep, useful baseline surrogate check | `T` relative RMSE `0.0561`; highest relative RMSE in `u_z` |
+| Crucible-rotation | `omega = -4 rpm` | Rotating-boundary case-wise generalization check | `T` relative RMSE `0.0634`; highest relative RMSE in `u_z` |
+| Crystal-rotation | `omega = 7 rpm` | Harder prediction, especially for velocity components | `T` relative RMSE `0.0958`; highest relative RMSE in `u_z` |
 
 The crystal-rotation case is harder because the corrected sweep shows stronger meridional-flow changes around the 6 to 7 rpm region.
 
-The code supports both corrected GitHub repository layouts and the raw `data.zip` layout shared during thesis development.
+The code supports both corrected GitHub repository layouts and the raw `data.zip` layout shared during thesis development. Selected generated GPR result files are included under `results/cfd_surrogate_gpr/`.
+
+The uncertainty plots should be read as diagnostic support, not as proof of physical correctness. They help reviewers see where the surrogate is less confident and where additional CFD cases may be useful.
 
 ## What the Results Support
 

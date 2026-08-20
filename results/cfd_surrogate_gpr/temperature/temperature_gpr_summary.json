@@ -1,0 +1,67 @@
+{
+  "dataset": "temperature",
+  "surrogate_model": "GaussianProcessRegressor",
+  "holdout_case": "cz_1780",
+  "holdout_parameter": 1780.0,
+  "train_cases": [
+    "cz_1730",
+    "cz_1740",
+    "cz_1745",
+    "cz_1755",
+    "cz_1760",
+    "cz_1765",
+    "cz_1770",
+    "cz_1775",
+    "cz_1785"
+  ],
+  "max_rows_per_case": 60,
+  "data_root": "/private/tmp/cz_corrected",
+  "kernel": "1**2 * RBF(length_scale=[1, 1, 1]) + WhiteKernel(noise_level=0.0001)",
+  "metrics": [
+    {
+      "target": "u_r",
+      "mae": 0.00022517256229578246,
+      "rmse": 0.000324412211401657,
+      "relative_rmse_std": 0.14374493833271115,
+      "mean_predictive_std": 3.875183379053442e-05,
+      "max_predictive_std": 6.745580108704423e-05,
+      "abs_error_uncertainty_corr": 0.42031614475228135
+    },
+    {
+      "target": "u_z",
+      "mae": 0.0003549877995826909,
+      "rmse": 0.0005575565130036057,
+      "relative_rmse_std": 0.2785049559083669,
+      "mean_predictive_std": 3.9006674866548555e-05,
+      "max_predictive_std": 6.789940613101035e-05,
+      "abs_error_uncertainty_corr": 0.4797516102669704
+    },
+    {
+      "target": "u_swirl",
+      "mae": 0.0008490145508653493,
+      "rmse": 0.0017170780601000108,
+      "relative_rmse_std": 0.030823442827332053,
+      "mean_predictive_std": 0.0008905659185258208,
+      "max_predictive_std": 0.0015502192174877754,
+      "abs_error_uncertainty_corr": 0.08046546665170344
+    },
+    {
+      "target": "p",
+      "mae": 0.09175583472557336,
+      "rmse": 0.12529513766719277,
+      "relative_rmse_std": 0.019835324508670257,
+      "mean_predictive_std": 0.08092928252697049,
+      "max_predictive_std": 0.14087461289612532,
+      "abs_error_uncertainty_corr": 0.3194128499667822
+    },
+    {
+      "target": "T",
+      "mae": 1.1219066646340992,
+      "rmse": 1.6823289969388024,
+      "relative_rmse_std": 0.056074671904773755,
+      "mean_predictive_std": 0.4091525315631512,
+      "max_predictive_std": 0.7122169219802459,
+      "abs_error_uncertainty_corr": 0.2285514137734639
+    }
+  ]
+}

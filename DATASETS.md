@@ -52,7 +52,7 @@ Each CFD case is expected to contain spatial coordinates and physical fields:
 r, z, u_r, u_z, u_swirl, p, T
 ```
 
-The supervised surrogate maps:
+The Gaussian Process Regression surrogate maps:
 
 ```text
 (r, z, case_parameter) -> (u_r, u_z, u_swirl, p, T)
@@ -61,6 +61,8 @@ The supervised surrogate maps:
 ## Why Case-Wise Holdout?
 
 The surrogate experiment holds out one complete CFD case for testing. This is stricter than randomly splitting rows because the model must generalize to an unseen process setting.
+
+GPR is used here instead of an MLP because it is faster for a compact sampled training set and gives predictive uncertainty. The uncertainty maps highlight regions where the surrogate is less confident, which is useful for physics review.
 
 ## Important Data Correction
 

@@ -1,0 +1,68 @@
+{
+  "dataset": "crystal",
+  "surrogate_model": "GaussianProcessRegressor",
+  "holdout_case": "CZ_crystal_07rpm_steady",
+  "holdout_parameter": 7.0,
+  "train_cases": [
+    "CZ_crystal_04rpm_steady",
+    "CZ_crystal_05rpm_steady",
+    "CZ_crystal_06rpm_steady",
+    "CZ_crystal_08rpm_steady",
+    "CZ_crystal_10rpm_steady",
+    "CZ_crystal_12rpm_steady",
+    "CZ_crystal_14rpm_steady",
+    "CZ_crystal_16rpm_steady",
+    "CZ_crystal_18rpm_steady",
+    "CZ_crystal_20rpm_steady"
+  ],
+  "max_rows_per_case": 60,
+  "data_root": "/private/tmp/cz_corrected",
+  "kernel": "1**2 * RBF(length_scale=[1, 1, 1]) + WhiteKernel(noise_level=0.0001)",
+  "metrics": [
+    {
+      "target": "u_r",
+      "mae": 0.0003017323570309774,
+      "rmse": 0.00044314576077614747,
+      "relative_rmse_std": 0.2295018219223406,
+      "mean_predictive_std": 8.109223748172569e-05,
+      "max_predictive_std": 0.00010915515604138991,
+      "abs_error_uncertainty_corr": 0.10275781038313345
+    },
+    {
+      "target": "u_z",
+      "mae": 0.00042775978337400146,
+      "rmse": 0.0007297565413803732,
+      "relative_rmse_std": 0.41459451617603904,
+      "mean_predictive_std": 5.759058707026704e-05,
+      "max_predictive_std": 7.752048424594135e-05,
+      "abs_error_uncertainty_corr": 0.057053673769229866
+    },
+    {
+      "target": "u_swirl",
+      "mae": 0.0007774817754404988,
+      "rmse": 0.0015418088763220733,
+      "relative_rmse_std": 0.02932723874667337,
+      "mean_predictive_std": 0.0008017387391419228,
+      "max_predictive_std": 0.0010791898200513362,
+      "abs_error_uncertainty_corr": 0.13420144717518556
+    },
+    {
+      "target": "p",
+      "mae": 0.36860190662752534,
+      "rmse": 0.4330425100687378,
+      "relative_rmse_std": 0.11999780977774367,
+      "mean_predictive_std": 0.06453012786449865,
+      "max_predictive_std": 0.08686153441021438,
+      "abs_error_uncertainty_corr": -0.08707690510543219
+    },
+    {
+      "target": "T",
+      "mae": 1.1912944550694133,
+      "rmse": 1.7997748427160365,
+      "relative_rmse_std": 0.09580567220829407,
+      "mean_predictive_std": 0.2155681598974995,
+      "max_predictive_std": 0.29016804643563404,
+      "abs_error_uncertainty_corr": -0.06155563311177766
+    }
+  ]
+}

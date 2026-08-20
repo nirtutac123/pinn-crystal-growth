@@ -8,6 +8,10 @@ The codebase is intentionally focused on three things:
 2. Corrected Czochralski CFD sweep data usage.
 3. Reproducible result generation for validation and thesis review.
 
+## Short Abstract
+
+This project studies adaptive physics-informed neural-network training for CFD-oriented Czochralski silicon single-crystal growth simulation. Baseline PINN, gradient-normalized PINN, and AgenticPINN variants are compared on benchmark and simplified crystal-growth-oriented PDE problems. The central finding is that adaptive control can reduce PDE residuals in selected settings, but it can also shift error toward boundary or initial-condition constraints; therefore, component-level physics metrics are more informative than total loss alone. Corrected Czochralski CFD sweep data are additionally used with Gaussian Process Regression to provide fast surrogate validation and uncertainty maps for temperature, crucible-rotation, and crystal-rotation cases.
+
 ## Research Aim
 
 The thesis investigates whether adaptive and agentic loss control can improve PINN training behavior for CFD-oriented silicon single-crystal growth simulation.
@@ -22,9 +26,9 @@ This repository contains a cleaned implementation focused on:
 
 - 1D heat equation as a controlled PINN benchmark
 - simplified 2D thermal-fluid PDE proxy for crystal-growth-oriented experiments
-- MLP and SIREN neural architectures
+- MLP and SIREN neural architectures for PINN experiments
 - Baseline PINN, GNPINN, and AgenticPINN training strategies
-- supervised CFD surrogate training on corrected Czochralski temperature, crucible-rotation, and crystal-rotation sweep datasets
+- fast Gaussian Process Regression (GPR) surrogate checks on corrected Czochralski temperature, crucible-rotation, and crystal-rotation sweep datasets
 - result tables, metrics, and plots for reproducible validation
 
 The full local thesis workspace contains draft writing, larger outputs, and third-party exploration folders. Those are intentionally excluded from this clean public repository.
@@ -34,12 +38,14 @@ The full local thesis workspace contains draft writing, larger outputs, and thir
 ```text
 .
 ├── Data/                  # Small synthetic demo dataset
+├── core/                  # Reusable CFD data loading and GPR surrogate utilities
 ├── equations/             # PDE formulations and residual definitions
-├── experiments/           # CFD surrogate training script
+├── experiments/           # Reproducible experiment scripts and local tests
 ├── examples/              # Small example runs
 ├── models/                # Neural architectures and PINN trainers
 ├── utils/                 # Training, seeding, and model IO helpers
 ├── visualization/         # Plotting utilities
+├── results/               # Selected lightweight review results
 ├── main.py                # Main CLI experiment entry point
 ├── requirements.txt       # Python dependencies
 ├── DATASETS.md            # External CFD data placement and meaning
@@ -93,13 +99,13 @@ Run a small crystal-growth-oriented thermal-fluid smoke test:
 python main.py --equation crystal --epochs 5 --collocation_points 200 --plot_resolution 20 --output_dir results/crystal_smoke
 ```
 
-Train supervised CFD surrogates on corrected external Czochralski CFD data:
+Fit supervised GPR CFD surrogates on corrected external Czochralski CFD data:
 
 ```bash
 python experiments/train_cfd_surrogate.py --dataset temperature --validate_only
-python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --epochs 120
-python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0 --epochs 120
-python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --epochs 120
+python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0
+python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0
+python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0
 ```
 
 These commands expect the external CFD repositories to be available under:
@@ -120,15 +126,16 @@ data/crystal/
 
 Use `--data_root /path/to/extracted/data_parent` if the corrected CSV files are stored outside `external_repos/`.
 
-The surrogate maps `(r, z, case_parameter)` to `(u_r, u_z, u_swirl, p, T)` and writes metrics and figures to `results/cfd_surrogate/`.
+The GPR surrogate maps `(r, z, case_parameter)` to `(u_r, u_z, u_swirl, p, T)` and writes metrics, parity plots, and uncertainty maps to `results/cfd_surrogate_gpr/`.
 
-Generated outputs are written under `results/`, which is ignored by Git.
+Selected GPR result summaries and plots are kept under `results/cfd_surrogate_gpr/` so the repository can be inspected quickly. Larger exploratory outputs remain ignored.
 
 For more detail, see:
 
 - `DATASETS.md` for corrected CFD data placement.
 - `REPRODUCIBILITY.md` for exact run commands.
 - `RESULTS_SUMMARY.md` for final thesis-reported outcomes.
+- `ABSTRACT.md` for a polished project abstract.
 
 The corrected CFD datasets are archived on Zenodo for citation:
 
@@ -195,7 +202,7 @@ Example with an extracted zip folder:
 
 ```bash
 python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --validate_only
-python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --holdout 1780.0 --epochs 120
+python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --holdout 1780.0
 ```
 
 ## Publication Note

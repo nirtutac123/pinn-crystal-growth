@@ -38,7 +38,7 @@ python main.py --equation crystal --epochs 5 --collocation_points 200 --plot_res
 
 These smoke tests are intentionally short. They are useful for checking that the code runs, not for reproducing final thesis-quality metrics.
 
-## 2. Corrected CFD Surrogate Runs
+## 2. Corrected CFD GPR Surrogate Runs
 
 Place or clone the corrected external CFD repositories at:
 
@@ -48,7 +48,7 @@ external_repos/CZ_study_Crucible_Sweep/
 external_repos/CZ_Crystal_Sweep/
 ```
 
-Then run the three case-wise holdout surrogate experiments.
+Then run the three case-wise holdout surrogate experiments. These use Gaussian Process Regression rather than an MLP so the runs are faster on a laptop and provide predictive uncertainty.
 
 Quick data validation without training:
 
@@ -61,28 +61,28 @@ python experiments/train_cfd_surrogate.py --dataset crystal --validate_only
 Temperature-change dataset:
 
 ```bash
-python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+python experiments/train_cfd_surrogate.py --dataset temperature --holdout 1780.0 --max_rows_per_case 80
 ```
 
 Crucible-rotation dataset:
 
 ```bash
-python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+python experiments/train_cfd_surrogate.py --dataset crucible --holdout -4.0 --max_rows_per_case 80
 ```
 
 Crystal-rotation dataset:
 
 ```bash
-python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+python experiments/train_cfd_surrogate.py --dataset crystal --holdout 7.0 --max_rows_per_case 80
 ```
 
 If using Bertwin's raw `data.zip`, extract it first and pass the parent folder with `--data_root`:
 
 ```bash
 python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --validate_only
-python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --holdout 1780.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
-python experiments/train_cfd_surrogate.py --dataset crucible --data_root /path/to/extracted --holdout -4.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
-python experiments/train_cfd_surrogate.py --dataset crystal --data_root /path/to/extracted --holdout 7.0 --epochs 120 --max_rows_per_case 1800 --hidden_dim 96 --hidden_layers 3
+python experiments/train_cfd_surrogate.py --dataset temperature --data_root /path/to/extracted --holdout 1780.0 --max_rows_per_case 80
+python experiments/train_cfd_surrogate.py --dataset crucible --data_root /path/to/extracted --holdout -4.0 --max_rows_per_case 80
+python experiments/train_cfd_surrogate.py --dataset crystal --data_root /path/to/extracted --holdout 7.0 --max_rows_per_case 80
 ```
 
 ## 3. Expected CFD Surrogate Outputs
@@ -90,18 +90,17 @@ python experiments/train_cfd_surrogate.py --dataset crystal --data_root /path/to
 Each surrogate run writes outputs to:
 
 ```text
-results/cfd_surrogate/<dataset>/
+results/cfd_surrogate_gpr/<dataset>/
 ```
 
 Expected files include:
 
-- `<dataset>_history.csv`
-- `<dataset>_summary.json`
-- `<dataset>_metrics.csv`
-- `<dataset>_training_loss.png`
+- `<dataset>_gpr_summary.json`
+- `<dataset>_gpr_metrics.csv`
+- `<dataset>_gpr_metrics.md`
 - `<dataset>_holdout_parity.png`
-- `<dataset>_holdout_T_field.png`
-- `<dataset>_holdout_u_swirl_field.png`
+- `<dataset>_holdout_T_field_uncertainty.png`
+- `<dataset>_holdout_u_swirl_field_uncertainty.png`
 
 ## 4. Interpreting the Runs
 
@@ -115,4 +114,12 @@ The CFD surrogate experiments use one full unseen case for testing:
 
 Temperature and crucible sweeps are expected to be easier because their field changes are smoother. The crystal-rotation holdout is expected to be harder, especially for radial and axial velocity, because the corrected data show stronger flow-structure change around the 6 to 7 rpm region.
 
-The `results/` directory is intentionally ignored by Git so generated artifacts do not make the public repository heavy.
+Selected `results/cfd_surrogate_gpr/` artifacts are kept in Git so collaborators can inspect the outcome without rerunning everything. Larger generated artifacts remain ignored.
+
+## 5. Local Test Command
+
+The CFD surrogate data-loading tests live beside the experiment script:
+
+```bash
+python -m unittest discover -s experiments/tests -v
+```

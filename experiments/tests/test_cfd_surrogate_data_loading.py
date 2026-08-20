@@ -4,12 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from experiments.train_cfd_surrogate import (
-    infer_crucible_rpm,
-    infer_crystal_rpm,
-    infer_temperature,
-    select_cases,
-)
+from core.cfd_data import infer_crucible_rpm, infer_crystal_rpm, infer_temperature, select_cases
 
 
 def write_case(path: Path):

@@ -24,7 +24,10 @@ dist/
 .idea/
 
 # Experiment artifacts
-results/
+results/*
+!results/README.md
+!results/cfd_surrogate_gpr/
+!results/cfd_surrogate_gpr/**
 checkpoints/
 logs/
 *.pt
@@ -34,3 +37,4 @@ logs/
 *.pdf
 *.mp4
 *.gif
+!results/cfd_surrogate_gpr/**/*.png
