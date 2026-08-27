@@ -28,6 +28,10 @@ results/*
 !results/README.md
 !results/cfd_surrogate_gpr/
 !results/cfd_surrogate_gpr/**
+!results/pinn_final/
+!results/pinn_final/**
+!results/svg_figures/
+!results/svg_figures/**
 checkpoints/
 logs/
 *.pt

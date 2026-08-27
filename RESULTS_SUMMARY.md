@@ -44,6 +44,14 @@ The code supports both corrected GitHub repository layouts and the raw `data.zip
 
 The uncertainty plots should be read as diagnostic support, not as proof of physical correctness. They help reviewers see where the surrogate is less confident and where additional CFD cases may be useful.
 
+## Vector Figure Collection
+
+Publication-ready vector figures are committed under `results/svg_figures/`.
+The collection covers final PINN losses, component-level trade-offs,
+convergence, AgenticPINN controller dynamics, GPR relative error, and
+uncertainty/error correlation. `paper_results_overview.svg` combines the two
+central result families in a compact layout suitable for a short paper.
+
 ## What the Results Support
 
 The results support three defensible claims:
