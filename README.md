@@ -46,6 +46,7 @@ The full local thesis workspace contains draft writing, larger outputs, and thir
 ├── utils/                 # Training, seeding, and model IO helpers
 ├── visualization/         # Plotting utilities
 ├── results/               # Selected lightweight review results
+├── scripts/               # Optional publication-figure generation scripts
 ├── main.py                # Main CLI experiment entry point
 ├── requirements.txt       # Python dependencies
 ├── DATASETS.md            # External CFD data placement and meaning
@@ -143,6 +144,20 @@ The corrected CFD datasets are archived on Zenodo for citation:
 - Crucible rotation sweep: https://doi.org/10.5281/zenodo.21955323
 - Crystal rotation sweep: https://doi.org/10.5281/zenodo.21955299
 
+## Publication-Figure Scripts
+
+The appendix figure scripts write to `results/appendix_fields/` by default:
+
+```bash
+python scripts/generate_heat_analytical_comparison.py
+python scripts/generate_crystal_field_comparison_svg.py \
+  --checkpoint-root results/thesis_runs/final
+```
+
+The crystal-field comparison requires trained checkpoints for the baseline,
+GNPINN, and AgenticPINN runs. Use `--checkpoint-root` when those checkpoints
+are stored outside this repository.
+
 ## Main CLI Options
 
 ```bash
@@ -208,6 +223,12 @@ python experiments/train_cfd_surrogate.py --dataset temperature --data_root /pat
 ## Publication Note
 
 Before public release or formal submission, review `NOTICE.md` and confirm that all included files, license metadata, and attribution are appropriate for your institution and supervisor requirements.
+
+## Citation
+
+Citation metadata are provided in `CITATION.cff`. After a versioned Zenodo
+release is created, add the resulting software DOI to both this section and
+the citation file.
 
 ## License
 

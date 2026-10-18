@@ -1,0 +1,24 @@
+{
+  "title": "PINN Crystal Growth",
+  "description": "Reproducible implementations and selected results for adaptive physics-informed neural-network training and CFD-oriented surrogate modelling of Czochralski silicon crystal growth.",
+  "upload_type": "software",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Chapagain, Niruta"
+    }
+  ],
+  "keywords": [
+    "physics-informed neural networks",
+    "Czochralski crystal growth",
+    "Gaussian process regression",
+    "computational fluid dynamics"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/nirtutac123/pinn-crystal-growth",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}

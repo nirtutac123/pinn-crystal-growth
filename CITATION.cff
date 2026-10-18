@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the repository release."
+title: "PINN Crystal Growth"
+type: software
+authors:
+  - family-names: "Chapagain"
+    given-names: "Niruta"
+repository-code: "https://github.com/nirtutac123/pinn-crystal-growth"
+license: MIT
+keywords:
+  - physics-informed neural networks
+  - Czochralski crystal growth
+  - Gaussian process regression
+  - computational fluid dynamics
+abstract: >-
+  Reproducible implementations and selected results for adaptive
+  physics-informed neural-network training and CFD-oriented surrogate
+  modelling of Czochralski silicon crystal growth.
