@@ -59,11 +59,13 @@ def configure_style() -> None:
     plt.rcParams.update(
         {
             "font.family": "DejaVu Sans",
-            "font.size": 10,
-            "axes.titlesize": 11,
-            "axes.labelsize": 10,
-            "legend.fontsize": 9,
-            "figure.titlesize": 13,
+            "font.size": 9,
+            "axes.titlesize": 9,
+            "axes.labelsize": 9,
+            "xtick.labelsize": 8,
+            "ytick.labelsize": 8,
+            "legend.fontsize": 8,
+            "figure.titlesize": 10,
             "axes.spines.top": False,
             "axes.spines.right": False,
             "axes.grid": True,
@@ -250,7 +252,7 @@ def plot_convergence(config: str, title: str, filename: str) -> None:
 
 
 def plot_agentic_dynamics() -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.6))
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.0))
     for ax, config, title in [
         (axes[0], "crystal_mlp", "Crystal-growth MLP"),
         (axes[1], "heat_mlp", "Heat-equation MLP"),
@@ -266,7 +268,7 @@ def plot_agentic_dynamics() -> None:
         ax.set_title(title)
         ax.legend(frameon=False, loc="center right")
     fig.suptitle("AgenticPINN controller weight dynamics")
-    fig.tight_layout()
+    fig.tight_layout(pad=0.6)
     save(fig, "agentic_controller_dynamics.svg")
 
 
@@ -315,7 +317,7 @@ def plot_gpr_uncertainty_correlation(gpr) -> None:
 
 
 def plot_paper_overview(summary, gpr) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(11.7, 4.6))
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.0))
 
     x = np.arange(len(METHODS))
     width = 0.34
@@ -339,11 +341,11 @@ def plot_paper_overview(summary, gpr) -> None:
     axes[1].set_ylabel(r"Temperature relative RMSE")
     axes[1].set_title("(b) Corrected CFD case-wise holdout")
     for idx, value in enumerate(t_values):
-        axes[1].text(idx, value + 0.003, f"{value:.3f}", ha="center", fontsize=9)
+        axes[1].text(idx, value + 0.003, f"{value:.3f}", ha="center", fontsize=8)
     axes[1].set_ylim(0, max(t_values) * 1.28)
 
     fig.suptitle("Component-level PINN findings and CFD surrogate validation")
-    fig.tight_layout()
+    fig.tight_layout(pad=0.6)
     save(fig, "paper_results_overview.svg")
 
 
