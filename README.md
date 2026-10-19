@@ -1,5 +1,7 @@
 # PINN Crystal Growth
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23475828.svg)](https://doi.org/10.5281/zenodo.23475828)
+
 Clean public repository for a thesis project on adaptive Physics-Informed Neural Networks (PINNs) and corrected Czochralski crystal-growth CFD data.
 
 The codebase is intentionally focused on three things:
@@ -226,9 +228,10 @@ Before public release or formal submission, review `NOTICE.md` and confirm that 
 
 ## Citation
 
-Citation metadata are provided in `CITATION.cff`. After a versioned Zenodo
-release is created, add the resulting software DOI to both this section and
-the citation file.
+Citation metadata are provided in `CITATION.cff`.
+
+- All versions: https://doi.org/10.5281/zenodo.23475828
+- Version `v1.0.0`: https://doi.org/10.5281/zenodo.23475829
 
 ## License
 
